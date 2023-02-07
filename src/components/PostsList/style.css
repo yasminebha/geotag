@@ -1,0 +1,5 @@
+
+.css-1h7c1td-MuiStack-root>:not(style)+:not(style) {
+    margin: 0;
+    margin-top :0 !important;
+}

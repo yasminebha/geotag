@@ -1,0 +1,10 @@
+.header{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+.widget{
+    display: flex;
+    flex-direction: column;
+    gap:0.7rem;
+}

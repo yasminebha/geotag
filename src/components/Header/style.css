@@ -1,0 +1,30 @@
+
+.header{
+    margin-bottom: 30px;
+  
+}
+.LinkItems{
+    display: flex;
+    justify-content: space-around;
+    text-decoration: none;
+}
+.Account{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.css-d7vuzu-MuiGrid-root {
+    padding: 10px;
+    margin-top: 0 !important;
+     width:100% !important; 
+     margin-left:0 !important;
+    justify-content: space-between !important;
+}
+.css-d7vuzu-MuiGrid-root>.MuiGrid-item {
+    padding-left: 0 !important;
+}
+
+.css-d7vuzu-MuiGrid-root>.MuiGrid-item {
+    padding-top: 0 !important
+}
