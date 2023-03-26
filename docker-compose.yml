@@ -5,7 +5,7 @@ services:
     image: postgres:15-alpine
     restart: always
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./backups:/var/lib/postgresql/backups
     environment:
       POSTGRES_PASSWORD: Tv9WT0ZAbUlPh0eP
       POSTGRES_USER: postgres
