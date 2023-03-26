@@ -2,31 +2,28 @@ import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import PersonRemoveAlt1RoundedIcon from "@mui/icons-material/PersonRemoveAlt1Rounded";
 import { IconButton } from "@mui/material";
 import { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import { UserContext } from "../../utils/context/user";
 
-function FriendButton({ friendId }) {
+function FriendButton({friendId}) {
   const [isFriend, setIsFriend] = useState(false);
   const { user } = useContext(UserContext);
-
+  const {id} = useParams()
   const addFriend = async () => {
     const { error } = await supabase.rpc("create_friendship", {
       user_id: user.id,
-      friend_id: friendId,
+      friend_id: id,
     }); 
-    console.log(friendId)
-
     if (!error) {
       setIsFriend(true);
-
       alert("friend added successfuly");
     }
   };
-
   const removeFriend = async () => {
     const { error } = await supabase.rpc("remove_friendship", {
       user_id: user.id,
-      friend_id: friendId,
+      friend_id: id,
     });
 
     if (!error) {

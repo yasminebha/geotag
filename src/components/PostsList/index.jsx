@@ -1,22 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import PostCard from "../PostCard";
-import { Lazy } from "swiper";
 
-import "swiper/css/lazy";
-import "./style.css";
 import { PostListContext } from "../../utils/context/postList";
+import "./style.css";
 function PostsList() {
   const { postList } = useContext(PostListContext);
 
+  const handleSlideChange = (swiper) => {
+    const activeSlide = postList[swiper.activeIndex];
+    console.log(activeSlide.id);
+  };
+
+  useEffect(() => {}, []);
+
   return (
     <Swiper
+      onSlideChange={handleSlideChange}
       direction={"vertical"}
       slidesPerView={1}
       className="list"
-      lazy={true}
-      modules={[Lazy]}
     >
       {postList.map(
         ({ id, description, created_at, user_metadata, user_id }) => (

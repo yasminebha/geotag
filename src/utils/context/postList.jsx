@@ -12,7 +12,7 @@ export const PostListProvider = ({ children }) => {
   const fetchPosts = async () => {
     const { data, error } = await supabase.rpc("nearby_posts", {
       ...geo,
-      rad: 100,
+      rad: 50,
     });
 
     if (!error) {
