@@ -32,11 +32,12 @@ const SignIn = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
       if (error) {
+        alert("Email or password incorrect,please retry");
         console.log("user not found");
         setSubmitting(false);
       } else {

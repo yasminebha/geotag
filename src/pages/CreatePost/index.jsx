@@ -21,6 +21,7 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
+import TagInput from "../../components/tagInput/TagInput";
 import { useGeoLocation } from "../../utils/context/geolocation";
 import { createMediasCollection } from "../../utils/media";
 
@@ -35,43 +36,51 @@ const CreatePost = () => {
   const [open, setOpen] = useState(false);
 
   const geo = useGeoLocation();
+  const handleTagsChange = (tags) => {
+    formik.setFieldValue("tags", tags); // Do something with the updated tags, e.g. update formik state
+  };
 
   const validationSchema = yup.object({
-    description: yup.string().required("description is required"),
-    medias: yup.array().required("insert at least one picture"),
+    description: yup.string("describe your post"),
+    medias: yup.array().required("insert one media at least "),
+    tags: yup
+      .array()
+      .of(yup.string())
+      .required("add tags to your post"),
   });
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    const { error, data: post } = await supabase
+      .rpc("create_post", {
+        description: values?.description,
+        tags: values.tags,
+        geo: `(${geo.lng},${geo.lat})`,
+        user_id: user.id,
+      })
+      .select("id");
+
+    if (error) {
+      console.log("Create Post is failed please try again");
+      setSubmitting(false);
+      return;
+    }
+
+    createMediasCollection(`/${user.id}`, values.medias, post.id);
+    setSubmitting(false);
+    setOpen(true);
+  };
 
   const formik = useFormik({
     initialValues: {
       description: "",
+      tags: [],
       medias: [],
     },
+    isInitialValid:false,
     validationSchema: validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      setSubmitting(true);
-      const { error } = await supabase.from("posts").insert({
-        description: values.description,
-        userID: user.id,
-        geo: `(${geo.lng},${geo.lat})`,
-      });
-
-      if (error) {
-        console.log("Create Post is failed please try again");
-        setSubmitting(false);
-        return;
-      }
-
-      const { data: post } = await supabase
-        .from("posts")
-        .select("id")
-        .eq("userID", user.id)
-        .eq("description", values.description)
-        .maybeSingle();
-
-      createMediasCollection(`/${user.id}`, values.medias, post.id);
-      setSubmitting(false);
-      setOpen(true);
-    },
+    
+    onSubmit: handleSubmit,
   });
 
   return (
@@ -101,7 +110,7 @@ const CreatePost = () => {
             margin="normal"
             id="description"
             name="description"
-            label="description"
+            label="what is on your mind ?"
             type="text"
             value={formik.values.description}
             onChange={formik.handleChange}
@@ -110,6 +119,8 @@ const CreatePost = () => {
             }
             helperText={formik.touched.description && formik.errors.description}
           />
+
+          <TagInput placeholder="tag your post!" onChange={handleTagsChange} />
 
           <FilePond
             onupdatefiles={(uploads) => {
@@ -127,7 +138,7 @@ const CreatePost = () => {
             fullWidth
             variant="filledTonal"
             type="submit"
-            disabled={formik.isSubmitting}
+            disabled={formik.isSubmitting||!formik.isValid}
             sx={{ mr: 3, mb: 2, color: "white" }}
           >
             Create

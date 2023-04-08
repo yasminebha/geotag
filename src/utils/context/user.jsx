@@ -3,7 +3,6 @@ import { supabase } from "../../supabaseClient";
 
 export const UserContext = createContext();
 
-
 export const UserProvider = ({ children }) => {
   const [islogged, setIsLogged] = useState(false);
   const [user, setUser] = useState(null);
@@ -22,12 +21,23 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  /**
+   * @description check id of the authenticated user
+   * @param {string} id
+   * @returns {boolean}
+   */
+  const isUser = (id) => {
+    return id === user?.id;
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
 
   return (
-    <UserContext.Provider value={{ islogged, setIsLogged, user, setUser }}>
+    <UserContext.Provider
+      value={{ islogged, setIsLogged, user, setUser, isUser }}
+    >
       {children}
     </UserContext.Provider>
   );

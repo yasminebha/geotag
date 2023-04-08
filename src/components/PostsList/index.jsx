@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import PostCard from "../PostCard";
@@ -6,14 +6,20 @@ import PostCard from "../PostCard";
 import { PostListContext } from "../../utils/context/postList";
 import "./style.css";
 function PostsList() {
-  const { postList } = useContext(PostListContext);
+  const { state, setActiveCard } = useContext(PostListContext);
 
+  
   const handleSlideChange = (swiper) => {
-    const activeSlide = postList[swiper.activeIndex];
-    console.log(activeSlide.id);
+    const activeSlide = state.cards[swiper.realIndex];
+    setActiveCard(activeSlide.id);
   };
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (state.cards.length > 0) {
+      const firstActiveSlide = state.cards[0];
+      setActiveCard(firstActiveSlide.id);
+    }
+  
+  }, []);
 
   return (
     <Swiper
@@ -22,8 +28,8 @@ function PostsList() {
       slidesPerView={1}
       className="list"
     >
-      {postList.map(
-        ({ id, description, created_at, user_metadata, user_id }) => (
+      {state.cards.map(
+        ({ id, description, created_at, user_metadata, user_id,tags }) => (
           <SwiperSlide key={id}>
             <PostCard
               userID={user_id}
@@ -33,6 +39,7 @@ function PostsList() {
               username={user_metadata.username}
               avatar={user_metadata.picture}
               createdAt={created_at}
+              tags={tags}
             />
           </SwiperSlide>
         )

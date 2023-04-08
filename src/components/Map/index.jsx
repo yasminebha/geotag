@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { useGeoLocation } from "../../utils/context/geolocation";
+import { PostListContext } from "../../utils/context/postList";
 import "./style.css";
 
-import { PostListContext } from "../../utils/context/postList";
-import { useGeoLocation } from "../../utils/context/geolocation";
-
-function LocationMarker() {
+function UserMarker() {
   const geo = useGeoLocation();
 
   const map = useMap();
@@ -14,23 +13,53 @@ function LocationMarker() {
     map.flyTo([geo.lat, geo.lng], map.getZoom());
   }, []);
 
-  return <Marker position={[geo.lat, geo.lng]} />;
+  return (
+    <Marker position={[geo.lat, geo.lng]}>
+      <Popup>your position</Popup>
+    </Marker>
+  );
 }
 
 function Map() {
-  const { postList } = useContext(PostListContext);
-  const [markes, setMarkes] = useState([]);
+  const mapRef = useRef();
+
+  const { state } = useContext(PostListContext);
+
+  const mapCardToMarker = (card) => {
+    const coords = card.geo
+      .replace(/[\(\)]/g, "")
+      .split(",")
+      .map((x) => parseFloat(x));
+
+    return {
+      id: card.id,
+      coords: [coords[1], coords[0]],
+      user_metadata: card.user_metadata,
+    };
+  };
+
+  const selectedMarker = state.cards
+    .map(mapCardToMarker)
+    .find((marker) => marker.id === state.activeCardId);
+
+  const mapMarkerToElement = (marker) => {
+    return (
+      <Marker key={marker.id} position={marker.coords} riseOnHover={true}>
+        <Popup autoOpen={true} className="custom-popup">
+          <div>
+            <img src={marker.user_metadata.picture} alt="user avatar" />
+            <p>{marker.user_metadata.username}</p>
+          </div>
+        </Popup>
+      </Marker>
+    );
+  };
 
   useEffect(() => {
-    const markes = postList.map((item) => {
-      return item.geo
-        .replace(/[\(\)]/g, "")
-        .split(",")
-        .map((x) => parseFloat(x));
-    });
-
-    setMarkes(markes);
-  }, []);
+    if (mapRef.current !== null && selectedMarker !== null) {
+      mapRef.current.flyTo(selectedMarker.coords);
+    }
+  }, [mapRef.current, selectedMarker]);
 
   return (
     <MapContainer
@@ -38,16 +67,14 @@ function Map() {
       zoom={13}
       center={[51.505, -0.09]}
       scrollWheelZoom={true}
+      ref={mapRef}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <LocationMarker />
-
-      {markes.map((position, key) => {
-        return <Marker key={key} position={[position[1], position[0]]} />;
-      })}
+      <UserMarker />
+      {state.cards.map(mapCardToMarker).map(mapMarkerToElement)}
     </MapContainer>
   );
 }

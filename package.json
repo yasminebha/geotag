@@ -10,6 +10,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
     "@mui/material-next": "^6.0.0-alpha.73",
+    "@mui/styles": "^5.11.13",
     "@supabase/supabase-js": "^2.5.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

@@ -5,18 +5,28 @@ import { useGeoLocation } from "./geolocation";
 export const PostListContext = createContext();
 
 export const PostListProvider = ({ children }) => {
-  const [postList, setPostList] = useState([]);
+  const [state, setState] = useState({ cards: [], activeCardId: 0 });
 
   const geo = useGeoLocation();
 
+  const setCards = (cards) => {
+    setState({ ...state, cards });
+  };
+
+  const setActiveCard = (id) => {
+    setState({ ...state, activeCardId: id });
+  };
+
   const fetchPosts = async () => {
-    const { data, error } = await supabase.rpc("nearby_posts", {
-      ...geo,
-      rad: 50,
-    });
+    const { data, error } = await supabase
+      .rpc("get_nearby_posts", {
+        ...geo,
+        rad:50,
+      })
+      .select(`*`);
 
     if (!error) {
-      setPostList(data);
+      setCards(data);
     }
   };
 
@@ -24,11 +34,11 @@ export const PostListProvider = ({ children }) => {
     fetchPosts();
   }, []);
 
-  console.log("====POST_LIST_CONTEXT====", postList);
+  console.log("====POST_LIST_CONTEXT====", state.activeCardId);
 
   return (
-    <PostListContext.Provider value={{ postList, setPostList }}>
-      {postList.length > 0 ? children : null}
+    <PostListContext.Provider value={{ state, setCards, setActiveCard }}>
+      {state.cards.length > 0 ? children : null}
     </PostListContext.Provider>
   );
 };

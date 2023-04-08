@@ -9,25 +9,6 @@ import "./style.css";
 
   function Footer() {
     const{islogged}=useContext(UserContext)
- 
-
-  // const [islogged, setIsLogged] = useState(false);
-  // useEffect(() => {
-  //   async function fetchUserState() {
-  //     const {data: { user }} = await supabase.auth.getUser();
-  //     if (user) {
-  //       setIsLogged(true);
-  //       console.log(user);
-  //       console.log(islogged);
-  //     } else {
-  //       console.log("no user is logged");
-  //     }
-  //   }
-  //   fetchUserState();
-  // }, [islogged]);
- 
-
- 
   return (
     <div className="footer">
       {islogged ? (
