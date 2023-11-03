@@ -24,6 +24,8 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import TagInput from "../../components/tagInput/TagInput";
 import { useGeoLocation } from "../../utils/context/geolocation";
 import { createMediasCollection } from "../../utils/media";
+import shadows from "@mui/material/styles/shadows";
+import { BorderAllRounded } from "@mui/icons-material";
 
 registerPlugin(
   FilePondPluginImageExifOrientation,
@@ -84,7 +86,11 @@ const CreatePost = () => {
   });
 
   return (
-    <Container component="main" maxWidth="xs">
+   <div className="main">
+
+  
+
+    <Container component="div" maxWidth="sm" sx={{p:0}} >
       <CssBaseline />
       <Box
         sx={{
@@ -92,9 +98,14 @@ const CreatePost = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          p:6,
+          backgroundColor:"white",
+          boxShadow:2,
+          borderRadius:3
+        
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography sx={{color:"#48855c",fontWeight:"700" ,fontFamily:"sans-serif"}} component="h1" variant="h4">
           New Post
         </Typography>
 
@@ -103,7 +114,7 @@ const CreatePost = () => {
           component="form"
           onSubmit={formik.handleSubmit}
           noValidate
-          sx={{ mt: 1 }}
+          sx={{ mt: 1,width:"80%" }}
         >
           <TextField
             fullWidth
@@ -168,6 +179,7 @@ const CreatePost = () => {
         </Box>
       </Box>
     </Container>
+    </div>
   );
 };
 export default CreatePost;

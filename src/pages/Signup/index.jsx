@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { supabase } from "../../supabaseClient";
 import { useFormik } from "formik";
 import TextField from "@mui/material/TextField";
@@ -44,6 +44,7 @@ const uploadUserAvatar = async (file, username) => {
 const Signup = () => {
   const navigate = useNavigate();
   const [, setUser] = useState();
+  const fileInputRef = useRef(null);
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -162,15 +163,40 @@ const Signup = () => {
             error={formik.touched.picture && Boolean(formik.errors.picture)}
             helperText={formik.touched.picture && formik.errors.picture}
           /> */}
-          <input
+            <input
             id="file"
             name="file"
             type="file"
             onChange={(event) => {
               formik.setFieldValue("picture", event.currentTarget.files[0]);
             }}
+            title="choose a picture"
             className="form-control"
           />
+          {/* <div style={{ position: "relative" }}>
+          <input
+              id="file"
+              name="file"
+              type="file"
+              onChange={()=>{}}
+              ref={fileInputRef}
+              style={{ display: "none" }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={()=>{
+                console.log("hello");
+                // fileInputRef.current.click();
+              }}
+              sx={{ mt: 1 }}
+            >
+              {formik.values.picture
+                ? formik.values.picture.name
+                : "Choose a file"}
+            </Button>
+          </div>
+           */}
           <Button
             className="w-full color"
             fullWidth

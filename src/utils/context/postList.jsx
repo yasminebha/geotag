@@ -21,7 +21,7 @@ export const PostListProvider = ({ children }) => {
     const { data, error } = await supabase
       .rpc("get_nearby_posts", {
         ...geo,
-        rad:50,
+        rad:100,
       })
       .select(`*`);
 

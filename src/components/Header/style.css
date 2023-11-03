@@ -1,12 +1,10 @@
 
-.header{
-    margin-bottom: 30px;
-  
-}
+
 .LinkItems{
     display: flex;
     justify-content: space-around;
     text-decoration: none;
+    color: black;
 }
 .Account{
     display: flex;
@@ -20,6 +18,7 @@
      width:100% !important; 
      margin-left:0 !important;
     justify-content: space-between !important;
+    align-items: center ! important;
 }
 .css-d7vuzu-MuiGrid-root>.MuiGrid-item {
     padding-left: 0 !important;

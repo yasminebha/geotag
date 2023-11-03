@@ -1,9 +1,9 @@
-.home{
 
-    min-width: 1600px;
-
-}
-.sideBar{
+/* .sideBar{
     min-width: 350px;
     max-width: 400px;
-}
+} */
+.map-container {
+    position: relative;
+  }
+  

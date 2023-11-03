@@ -2,7 +2,7 @@ import "@fontsource/roboto/300.css";
 import Button from "@mui/material-next/Button";
 import { Link, useNavigate } from "react-router-dom";
 import "./style.css";
-
+import logo from '../../assets/logo.png'
 import { Logout } from "@mui/icons-material";
 import {
   Avatar,
@@ -40,20 +40,16 @@ function Header() {
       wrap="nowrap"
       container
       spacing={3}
-      className="header "
+      className="header"
     >
       <Grid item>
-        <Typography variant="h3" color={"#7adf9c"} fontWeight="800">
-          Geotag
-        </Typography>
+       
+        <img src={logo} width={200}  alt="logo" />
       </Grid>
       <Grid item className="LinkItems">
         <div className="Account">
           {islogged ? (
             <>
-              <Typography variant="caption">
-                {user.user_metadata.username}
-              </Typography>
               <Tooltip title="Account settings">
                 <IconButton
                   onClick={handleClick}
@@ -63,7 +59,7 @@ function Header() {
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                 >
-                  <Avatar src={user.user_metadata.picture} />
+                  <Avatar src={user.user_metadata.picture}sx={{ width: 50, height: 50}}/>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -101,15 +97,19 @@ function Header() {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
+                <MenuItem>
+                  <Typography sx={{margin:"auto"}} variant="caption">
+                    {user.user_metadata.username}
+                  </Typography>
+                </MenuItem>
                 <MenuItem
                 // onClick={() => {
                 //   navigate(`/profile/${user.id}`);
                 // }}
                 >
                   <Avatar src={user.user_metadata.picture} />
-                  <Link to={`/profile/${user.id}`}>Profile</Link>
+                  <Link className="LinkItems" to={`/profile/${user.id}`}>Profile</Link>
                 </MenuItem>
-
                 <MenuItem onClick={logout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />

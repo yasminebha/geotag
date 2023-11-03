@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import PostCard from "../PostCard";
 
 import { PostListContext } from "../../utils/context/postList";
-import "./style.css";
+// import "./style.css";
 function PostsList() {
   const { state, setActiveCard } = useContext(PostListContext);
 
@@ -27,6 +27,7 @@ function PostsList() {
       direction={"vertical"}
       slidesPerView={1}
       className="list"
+      
     >
       {state.cards.map(
         ({ id, description, created_at, user_metadata, user_id,tags }) => (

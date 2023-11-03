@@ -2,3 +2,22 @@
     background-color: #7ed49a !important;
     text-decoration-color: white !important;
 }
+input[type='file'].form-control {
+    
+    padding: 12px 20px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    color: #555;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    width: 100%;
+  }
+  #file-upload-button{
+    display: none;
+  }
+  input[type='file'].form-control:hover,
+  input[type='file'].form-control:focus {
+    border-color: #000000;
+  }

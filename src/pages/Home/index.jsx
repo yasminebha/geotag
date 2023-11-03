@@ -1,19 +1,28 @@
-import Grid2 from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import Map from "../../components/Map";
 import SideBar from "../../components/SideBar";
 import "./style.css";
+import AddPostButton from "../../components/AddPostButton";
+
+import SearchByTagBar from "../../components/SearchByTagBar";
+
 function Home() {
   return (
     <div className="home">
-      <Grid2 container>
-        <Grid2 item className="sideBar" xs={3}>
+      <Grid container >
+        <Grid item xs={12} sm={3}>
           <SideBar />
-        </Grid2>
-        <Grid2 item xs>
-          <Map />
-        </Grid2>
-      </Grid2>
+        </Grid>
+        <Grid item xs={12} sm={9}>
+          <div className="map-container">
+            <SearchByTagBar />
+            <AddPostButton />
+            <Map />
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 }
+
 export default Home;

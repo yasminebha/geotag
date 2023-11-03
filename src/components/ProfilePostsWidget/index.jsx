@@ -55,6 +55,7 @@ function ProfilePostsWidget() {
 
   useEffect(() => {
     fetchPostsById(profileId);
+    console.log(postList);
   }, [profileId]);
 
   const handleOpen = (index) => {
@@ -76,7 +77,7 @@ function ProfilePostsWidget() {
       <Grid container spacing={2}>
         {postList.map(({ id, description, medias, created_at }, index) => (
           <Grid item xs={12} sm={6} md={4} key={id}>
-            <Card sx={{ height: "50%" }}>
+            <Card>
               <CardMedia
                 onClick={() => handleOpen(index)}
                 component="img"
